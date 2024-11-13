@@ -10,7 +10,7 @@ const PublicRoute: React.FC<PublicRouteProps> = ({ children }) => {
   const { token } = useAuthStore();
 
   if (token) {
-    return <Navigate to="/" />;
+    return <Navigate to="/home" />;
   }
 
   return children;

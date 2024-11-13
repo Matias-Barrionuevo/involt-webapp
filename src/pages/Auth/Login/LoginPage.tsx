@@ -76,7 +76,7 @@ const LoginPage = () => {
       <div className="grid lg:grid-cols-2 h-full">
         <section className="flex justify-center items-center h-full px-4">
           <header className="p-1 sm:p-4 absolute top-0 left-0">
-            <Link to="/">
+            <Link to="/auth/login">
               <Logo className="h-12 w-28 sm:h-16 sm:w-40" />
             </Link>
           </header>
@@ -95,7 +95,7 @@ const LoginPage = () => {
                   <CardDescription className="text-center py-1">
                     Don't have one?
                     <Label>
-                      <Link to="register" className="pl-1 text-primary">
+                      <Link to="/auth/register" className="pl-1 text-primary">
                         Register here
                       </Link>
                     </Label>
@@ -139,7 +139,7 @@ const LoginPage = () => {
                   />
                   <div className="text-center">
                     <Label className="text-primary">
-                      <Link to="/recover">Forgot password?</Link>
+                      <Link to="/auth/recover">Forgot password?</Link>
                     </Label>
                   </div>
                 </CardContent>
