@@ -7,9 +7,9 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { token } = useAuthStore();
+  const { isLogin } = useAuthStore();
 
-  if (!token) {
+  if (!isLogin()) {
     return <Navigate to="/auth/login" />;
   }
 

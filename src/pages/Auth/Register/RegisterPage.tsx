@@ -1,5 +1,9 @@
+import AuthLayout from '@/components/Layout/AuthLayout';
+
 const RegisterPage = () => {
-  return <div>RegisterPage</div>;
+  const authContent = null;
+
+  return <AuthLayout authContent={authContent} />;
 };
 
 export default RegisterPage;
