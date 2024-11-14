@@ -41,7 +41,9 @@ export function Toaster() {
               {action}
               <ToastClose />
             </Toast>
-            <ToastViewport className={`p-6 ${positionClasses[position]}`} />
+            <ToastViewport
+              className={`p-6 focus:outline-none pointer-events-none ${positionClasses[position]}`}
+            />
           </Fragment>
         );
       })}

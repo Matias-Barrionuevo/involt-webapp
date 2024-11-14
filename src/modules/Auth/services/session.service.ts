@@ -1,8 +1,8 @@
 import axiosInstance from '@/api/axiosInstance';
+import { BASE_AUTH_URL } from '@/modules/Auth/constants/services.constants';
 import { CONSUMER } from '@/utils/constants/config';
 
 const consumer = CONSUMER;
-const BASE_AUTH_URL = `/settle/api/settleid/auth/user`;
 
 export const loginUser = ({
   email,

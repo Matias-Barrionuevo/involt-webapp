@@ -14,6 +14,8 @@ import InvoicesReceivedPage from '@/pages/Invoices/InvoicesReceivedPage';
 import ContactPage from '@/pages/Contact/ContactPage';
 import AccountPage from '@/pages/Account/AccountPage';
 import SettingPage from '@/pages/Setting/SettingPage';
+import VerifyPasswordPage from '@/pages/Auth/VerifyPassword/VerifyPasswordPage';
+import SetPasswordPage from '@/pages/Auth/SetPassword/SetPasswordPage';
 
 const router = createBrowserRouter([
   {
@@ -42,6 +44,22 @@ const router = createBrowserRouter([
     element: (
       <PublicRoute>
         <RecoverPage />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: '/auth/verify-password',
+    element: (
+      <PublicRoute>
+        <VerifyPasswordPage />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: '/auth/set-password',
+    element: (
+      <PublicRoute>
+        <SetPasswordPage />
       </PublicRoute>
     ),
   },

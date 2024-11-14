@@ -44,7 +44,7 @@ export const useCustomQuery = <
         toast({
           title: successMessage,
           position: toastPosition,
-          variant: 'default',
+          variant: 'success',
           duration: 4000,
         });
       }

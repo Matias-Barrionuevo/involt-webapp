@@ -35,7 +35,7 @@ export const useCustomMutation = <
     allowProblems = [],
     invalidQueryKey,
     ...options
-  }: CustomMutationOptions<TData, TError, TVariables, TContext>
+  } = {} as CustomMutationOptions<TData, TError, TVariables, TContext>
 ) => {
   const { toast } = useToast();
 
@@ -47,7 +47,7 @@ export const useCustomMutation = <
         toast({
           title: successMessage,
           position: toastPosition,
-          variant: 'default',
+          variant: 'success',
           duration: 4000,
         });
       }
