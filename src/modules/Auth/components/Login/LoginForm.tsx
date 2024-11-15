@@ -30,6 +30,7 @@ import { z } from 'zod';
 const LoginForm = () => {
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
+    shouldFocusError: true,
     defaultValues: { email: '', password: '' },
   });
   const { setToken } = useAuthStore();
@@ -47,7 +48,7 @@ const LoginForm = () => {
 
   return (
     <Form {...form}>
-      <Card className="space-y-2 sm:space-y-6 max-w-[448px] w-full flex flex-col">
+      <Card className="space-y-2 sm:space-y-6 sm:w-[448px] w-full flex flex-col">
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardHeader>
             <div className="flex justify-center py-2">

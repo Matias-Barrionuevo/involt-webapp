@@ -12,7 +12,7 @@ type CustomMutationOptions<
   TVariables,
   TContext
 > = UseMutationOptions<TData, TError, TVariables, TContext> & {
-  successMessage?: string;
+  successMessage?: string | false | null;
   toastPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
   displayError?: boolean;
   omitProblems?: TError[];

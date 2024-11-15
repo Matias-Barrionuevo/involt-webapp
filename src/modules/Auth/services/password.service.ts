@@ -19,7 +19,7 @@ export const setPassword = ({
   email: string;
   password: string;
   verificationCodeHash: string;
-  changePasswordMode: 'password-recovery';
+  changePasswordMode: 'password-recovery' | 'sign-up';
 }) =>
   axiosInstance.patch(`${PASSWORD_URL}/set`, {
     email,

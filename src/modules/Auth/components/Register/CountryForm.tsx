@@ -1,4 +1,4 @@
-import { Action, Password } from '@/components/svg';
+import { Action } from '@/components/svg';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Combobox } from '@/components/ui/combo-box';
 import {
   Form,
   FormControl,
@@ -15,34 +16,49 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useCustomMutation } from '@/hooks/useCustomMutation';
-import { ResetPasswordSchema } from '@/modules/Auth/schemas/reset-password.schema';
-import { recoverPassword } from '@/modules/Auth/services/password.service';
+import { useCustomQuery } from '@/hooks/useCustomQuery';
+import { CountrySchema } from '@/modules/Auth/schemas/register.schema';
+import { getCountries } from '@/modules/Auth/services/country.service';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Globe } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { z } from 'zod';
 
-const RecoverForm = () => {
+interface CountryFormProps {
+  formData: {
+    countryCode?: string;
+  };
+  onSubmit?: (data: any) => void;
+}
+
+const CountryForm: React.FC<CountryFormProps> = ({
+  formData,
+  onSubmit = () => {},
+}) => {
+  const { countryCode } = formData;
   const navigate = useNavigate();
 
-  const form = useForm<z.infer<typeof ResetPasswordSchema>>({
-    resolver: zodResolver(ResetPasswordSchema),
+  const form = useForm<z.infer<typeof CountrySchema>>({
+    resolver: zodResolver(CountrySchema),
     shouldFocusError: true,
-    defaultValues: { email: '' },
+    defaultValues: { countryCode },
   });
 
-  const { isPending, mutate } = useCustomMutation(recoverPassword, {
-    onSuccess: () =>
-      navigate('/auth/verify-email', { state: { ...form.getValues() } }),
+  const { data, isLoading } = useCustomQuery(getCountries, {
+    queryKey: ['countries'],
+    params: { enabled: true },
+    select: ({ countries }) =>
+      countries.map(
+        (country: { isoCode: string; name: string; flag: string }) => ({
+          ...country,
+          icon: country.flag,
+          label: country.name,
+          value: country.isoCode,
+        })
+      ),
   });
-
-  const onSubmit = (data: z.infer<typeof ResetPasswordSchema>) => {
-    mutate(data);
-  };
 
   return (
     <Form {...form}>
@@ -51,30 +67,32 @@ const RecoverForm = () => {
           <CardHeader>
             <div className="flex justify-center py-2">
               <Action>
-                <Password className="w-5 h-5 text-primary" />
+                <Globe className="w-5 h-5 text-primary" />
               </Action>
             </div>
-            <CardTitle className="text-center">Reset Password</CardTitle>
+            <CardTitle className="text-center">Choose your country</CardTitle>
             <CardDescription className="text-center py-1">
               <Label>
-                Enter the email address you used to create your Settle ID
-                Account, so we can send you a code to reset your password.
+                Select your country of residence that matches your
+                identification document.
               </Label>
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2 sm:space-y-4">
             <FormField
               control={form.control}
-              name="email"
+              name="countryCode"
               render={({ field, fieldState: { error } }) => (
                 <FormItem className="grid w-full items-center gap-1 sm:gap-2">
-                  <Label htmlFor="email">Enter your email</Label>
                   <FormControl>
-                    <Input
+                    <Combobox
                       {...field}
-                      placeholder="you@example.com"
-                      variant={error?.message ? 'destructive' : 'default'}
-                      autoComplete="email"
+                      items={data || []}
+                      searchPlaceholder="Please, type or choose one"
+                      placeholder="Select your country"
+                      emptyMessage="Nothing found."
+                      hasError={Boolean(error?.message)}
+                      disabled={isLoading}
                     />
                   </FormControl>
                   <FormMessage />
@@ -83,8 +101,8 @@ const RecoverForm = () => {
             />
           </CardContent>
           <CardFooter className="flex flex-col gap-2 justify-center items-end py-2 p-4 sm:py-6">
-            <Button isLoading={isPending} className="w-full h-12">
-              Next
+            <Button disabled={isLoading} className="w-full h-12">
+              Continue with Email ID
             </Button>
             <Button
               variant="outline"
@@ -102,4 +120,4 @@ const RecoverForm = () => {
   );
 };
 
-export default RecoverForm;
+export default CountryForm;

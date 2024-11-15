@@ -9,7 +9,7 @@ export const validateCode = ({
 }: {
   email: string;
   code: string;
-  checkVerificationCodeMode: 'password-recovery';
+  checkVerificationCodeMode: 'password-recovery' | 'sign-up';
 }) =>
   axiosInstance.post(`${CODE_URL}/validate`, {
     email,
@@ -22,7 +22,7 @@ export const sendCode = ({
   checkVerificationCodeMode,
 }: {
   email: string;
-  checkVerificationCodeMode: 'password-recovery';
+  checkVerificationCodeMode: 'password-recovery' | 'sign-up';
 }) =>
   axiosInstance.patch(`${CODE_URL}/send`, {
     email,

@@ -26,15 +26,31 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router';
 import { z } from 'zod';
-const SetPasswordForm = () => {
+
+const SetPasswordForm = ({
+  formData,
+  onSubmit,
+}: {
+  formData?: {
+    lastName?: string;
+    firstName?: string;
+    kind: 'person' | 'company';
+    countryCode: string;
+    email?: string;
+    code: string;
+  };
+  onSubmit?: (data: any) => void;
+}) => {
   const location = useLocation();
+  const hasFormData = Boolean(formData);
 
   const form = useForm<z.infer<typeof setPasswordSchema>>({
     resolver: zodResolver(setPasswordSchema),
+    shouldFocusError: true,
     defaultValues: {
-      email: location.state.email,
-      changePasswordMode: 'password-recovery',
-      verificationCodeHash: location.state.code,
+      email: location.state?.email || formData?.email || '',
+      changePasswordMode: hasFormData ? 'sign-up' : 'password-recovery',
+      verificationCodeHash: location.state?.code || formData?.code || '',
       password: '',
       newPassword: '',
     },
@@ -43,32 +59,39 @@ const SetPasswordForm = () => {
   const navigate = useNavigate();
 
   const { isPending, mutate } = useCustomMutation(setPassword, {
-    onSuccess: () => navigate('/auth/login'),
-    successMessage: 'Password changed successfully',
+    onSuccess: () => {
+      if (hasFormData) {
+        return onSubmit?.(form.getValues());
+      }
+      navigate('/auth/login');
+    },
+    successMessage: !hasFormData && 'Password changed successfully',
   });
 
   useEffect(() => {
-    if (!location.state.email) {
+    if (!location.state?.email && !formData?.email) {
       navigate('/auth/login');
     }
   }, [location]);
 
-  const onSubmit = (data: z.infer<typeof setPasswordSchema>) => {
+  const handleOnSubmit = (data: z.infer<typeof setPasswordSchema>) => {
     mutate(data);
   };
   return (
     <Form {...form}>
       <input hidden {...form.register('changePasswordMode')} />
       <input hidden {...form.register('verificationCodeHash')} />
-      <Card className="space-y-2 sm:space-y-6 max-w-[448px] w-full flex flex-col">
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+      <Card className="space-y-2 sm:space-y-6 sm:w-[448px] w-full flex flex-col">
+        <form onSubmit={form.handleSubmit(handleOnSubmit)}>
           <CardHeader>
             <div className="flex justify-center py-2">
               <Action>
                 <Password className="w-5 h-5 text-primary" />
               </Action>
             </div>
-            <CardTitle className="text-center">Reset Password</CardTitle>
+            <CardTitle className="text-center">
+              {hasFormData ? 'Generate your password' : 'Reset Password'}
+            </CardTitle>
             <CardDescription className="text-center py-1">
               Password must have at least 10 characters, lower and upper case
               letters, a special character and a number.
@@ -131,7 +154,7 @@ const SetPasswordForm = () => {
           </CardContent>
           <CardFooter className="justify-center items-end py-2 p-4 sm:py-6">
             <Button className="w-full h-12" isLoading={isPending}>
-              Next
+              {hasFormData ? 'Register now' : 'Next'}
             </Button>
           </CardFooter>
         </form>

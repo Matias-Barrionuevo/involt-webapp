@@ -1,14 +1,14 @@
 import AuthLayout from '@/components/Layout/AuthLayout';
-import SetPasswordForm from '@/modules/Auth/components/RecoverPassword/SetPasswordForm';
+import VerifyEmailForm from '@/modules/Auth/components/RecoverPassword/VerifyEmailForm';
 import RegisterIllustration from '@/modules/Auth/components/Register/RegisterIllustration';
 
-const SetPasswordPage = () => {
+const VerifyEmailPage = () => {
   return (
     <AuthLayout
-      authContent={<SetPasswordForm />}
+      authContent={<VerifyEmailForm />}
       illustration={<RegisterIllustration />}
     />
   );
 };
 
-export default SetPasswordPage;
+export default VerifyEmailPage;

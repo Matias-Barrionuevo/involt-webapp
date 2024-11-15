@@ -14,8 +14,8 @@ import InvoicesReceivedPage from '@/pages/Invoices/InvoicesReceivedPage';
 import ContactPage from '@/pages/Contact/ContactPage';
 import AccountPage from '@/pages/Account/AccountPage';
 import SettingPage from '@/pages/Setting/SettingPage';
-import VerifyPasswordPage from '@/pages/Auth/VerifyPassword/VerifyPasswordPage';
 import SetPasswordPage from '@/pages/Auth/SetPassword/SetPasswordPage';
+import VerifyEmailPage from '@/pages/Auth/VerifyEmail/VerifyEmailPage';
 
 const router = createBrowserRouter([
   {
@@ -48,10 +48,10 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '/auth/verify-password',
+    path: '/auth/verify-email',
     element: (
       <PublicRoute>
-        <VerifyPasswordPage />
+        <VerifyEmailPage />
       </PublicRoute>
     ),
   },

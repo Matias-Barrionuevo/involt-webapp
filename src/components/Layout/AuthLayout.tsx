@@ -22,33 +22,31 @@ const AuthLayout = ({
 }) => {
   return (
     <div className="h-full w-full">
-      <header className="p-1 sm:p-4 absolute top-0 left-0">
+      <header className="p-1 sm:p-4 absolute top-0 left-0 flex justify-between w-full">
         <Link to="/auth/login">
           <Logo className="h-12 w-28 sm:h-16 sm:w-40" />
         </Link>
+        <div className="flex gap-2 items-center justify-end p-2 sm:p-4">
+          <Globe className="text-muted-foreground lg:text-white w-5 h-5" />
+          <Select defaultValue="en">
+            <SelectTrigger className="w-[70px] bg-transparent text-muted-foreground lg:text-white focus:ring-offset-0">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Language</SelectLabel>
+                <SelectItem value="en">EN</SelectItem>
+                <SelectItem value="es">ES</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
       </header>
-      <main className="grid lg:grid-cols-2 h-full">
-        <section className="flex justify-center items-center h-full px-4">
+      <main className="grid lg:grid-cols-2 h-full w-full">
+        <section className="flex justify-center items-center w-full h-full px-4">
           {authContent}
         </section>
-        <section className="bg-primary hidden lg:grid h-full">
-          <div>
-            <div className="flex gap-2 items-center justify-end p-4">
-              <Globe className="text-white w-5 h-5" />
-              <Select defaultValue="en">
-                <SelectTrigger className="w-[70px] bg-transparent text-white focus:ring-offset-0">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Language</SelectLabel>
-                    <SelectItem value="en">EN</SelectItem>
-                    <SelectItem value="es">ES</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
+        <section className="bg-primary hidden lg:grid h-full place-content-center">
           {illustration}
         </section>
       </main>

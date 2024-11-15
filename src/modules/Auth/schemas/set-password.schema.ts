@@ -8,7 +8,7 @@ export const setPasswordSchema = z
     email: z
       .string({ required_error: 'This field is required' })
       .email('Invalid email'),
-    changePasswordMode: z.enum(['password-recovery']),
+    changePasswordMode: z.enum(['password-recovery', 'sign-up']),
     verificationCodeHash: z.string(),
     password: z
       .string()

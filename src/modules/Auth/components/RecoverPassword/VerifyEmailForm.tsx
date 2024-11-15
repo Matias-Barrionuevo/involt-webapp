@@ -21,25 +21,41 @@ import {
   InputOTPSlot,
 } from '@/components/ui/input-otp';
 import { Label } from '@/components/ui/label';
+import { useCountDown } from '@/hooks/useCountdown';
 import { useCustomMutation } from '@/hooks/useCustomMutation';
 import { VerifyEmailSchema } from '@/modules/Auth/schemas/verify-email.schema';
-import { validateCode } from '@/modules/Auth/services/code.service';
+import { sendCode, validateCode } from '@/modules/Auth/services/code.service';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router';
 import { z } from 'zod';
 
-const VerifyPasswordForm = () => {
+const VerifyEmailForm = ({
+  formData,
+  onSubmit,
+}: {
+  formData?: {
+    lastName?: string;
+    firstName?: string;
+    kind: 'person' | 'company';
+    countryCode: string;
+    email?: string;
+  };
+  onSubmit?: (data: any) => void;
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const email = location.state?.email || '';
+  const [countDown, resetCountDown] = useCountDown({ initCountDown: 30 });
+  const email = location.state?.email || formData?.email || '';
+  const hasFormData = Boolean(formData);
 
   const form = useForm<z.infer<typeof VerifyEmailSchema>>({
     resolver: zodResolver(VerifyEmailSchema),
+    shouldFocusError: true,
     defaultValues: {
       code: '',
-      checkVerificationCodeMode: 'password-recovery',
+      checkVerificationCodeMode: hasFormData ? 'sign-up' : 'password-recovery',
       email,
     },
   });
@@ -51,14 +67,19 @@ const VerifyPasswordForm = () => {
   }, [email]);
 
   const { mutate, isPending } = useCustomMutation(validateCode, {
-    onSuccess: () =>
-      navigate('/auth/set-password', { state: { ...form.getValues() } }),
+    onSuccess: () => {
+      if (hasFormData) {
+        return onSubmit?.(form.getValues());
+      }
+      navigate('/auth/set-password', { state: { ...form.getValues() } });
+    },
   });
 
-  const onSubmit = (data: z.infer<typeof VerifyEmailSchema>) => {
+  const { mutate: resendCode } = useCustomMutation(sendCode);
+
+  const handleOnSubmit = (data: z.infer<typeof VerifyEmailSchema>) => {
     mutate({
       ...data,
-      email,
     });
   };
 
@@ -66,8 +87,8 @@ const VerifyPasswordForm = () => {
     <Form {...form}>
       <input hidden {...form.register('checkVerificationCodeMode')} />
       <input hidden {...form.register('email')} />
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <Card className="space-y-2 sm:space-y-6 max-w-[448px] w-full">
+      <form onSubmit={form.handleSubmit(handleOnSubmit)}>
+        <Card className="space-y-2 sm:space-y-6 sm:w-[448px] w-full flex flex-col">
           <CardHeader>
             <div className="flex justify-center py-2">
               <Action>
@@ -92,7 +113,7 @@ const VerifyPasswordForm = () => {
                     <InputOTP
                       maxLength={4}
                       {...field}
-                      onComplete={form.handleSubmit(onSubmit)}
+                      onComplete={form.handleSubmit(handleOnSubmit)}
                     >
                       <InputOTPGroup>
                         <InputOTPSlot index={0} />
@@ -103,8 +124,16 @@ const VerifyPasswordForm = () => {
                     </InputOTP>
                   </FormControl>
                   <FormMessage />
-                  <Button type="button" variant="ghost">
-                    Resend code
+                  <Button
+                    type="button"
+                    variant="link"
+                    disabled={countDown !== 0}
+                    onClick={() => {
+                      resendCode(form.getValues());
+                      resetCountDown();
+                    }}
+                  >
+                    {`Resend code ${countDown ? `on ${countDown}s` : ''}`}
                   </Button>
                 </FormItem>
               )}
@@ -121,4 +150,4 @@ const VerifyPasswordForm = () => {
   );
 };
 
-export default VerifyPasswordForm;
+export default VerifyEmailForm;
