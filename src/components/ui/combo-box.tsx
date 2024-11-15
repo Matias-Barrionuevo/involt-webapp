@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Check, ChevronsUpDown } from 'lucide-react';
+import { Check, ChevronsUpDown, Loader2 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -35,6 +35,7 @@ interface ComboboxProps
   hasError?: boolean;
   searchPlaceholder?: string;
   value?: string;
+  isLoading?: boolean;
   onChange?: (value: string) => void;
 }
 
@@ -88,6 +89,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
       popoverContentClassName,
       searchPlaceholder,
       value: defaultValue = '',
+      isLoading,
       ...props
     },
     ref
@@ -142,12 +144,16 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                 {placeholder}
               </Label>
             )}
-            <ChevronsUpDown
-              className={cn(
-                'ml-2 h-4 w-4 shrink-0',
-                hasError && 'text-destructive'
-              )}
-            />
+            {isLoading ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              <ChevronsUpDown
+                className={cn(
+                  'ml-2 h-4 w-4 shrink-0',
+                  hasError && 'text-destructive'
+                )}
+              />
+            )}
           </Button>
         </PopoverTrigger>
         <PopoverContent

@@ -93,6 +93,7 @@ const CountryForm: React.FC<CountryFormProps> = ({
                       emptyMessage="Nothing found."
                       hasError={Boolean(error?.message)}
                       disabled={isLoading}
+                      isLoading={isLoading}
                     />
                   </FormControl>
                   <FormMessage />
