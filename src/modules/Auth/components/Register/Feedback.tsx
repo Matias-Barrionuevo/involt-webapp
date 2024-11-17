@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { useCountDown } from '@/hooks/useCountdown';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 const Feedback = () => {
   const navigate = useNavigate();

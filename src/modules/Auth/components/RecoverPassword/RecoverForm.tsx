@@ -23,7 +23,7 @@ import { recoverPassword } from '@/modules/Auth/services/password.service';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowLeft } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 const RecoverForm = () => {

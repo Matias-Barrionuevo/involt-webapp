@@ -24,7 +24,7 @@ import { setPassword } from '@/modules/Auth/services/password.service';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useLocation, useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 const SetPasswordForm = ({
