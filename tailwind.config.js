@@ -23,6 +23,7 @@ module.exports = {
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
+          700: 'hsl(var(--primary-700))',
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
@@ -51,7 +52,21 @@ module.exports = {
           4: 'hsl(var(--chart-4))',
           5: 'hsl(var(--chart-5))',
         },
+        sidebar: {
+          DEFAULT: 'hsl(var(--sidebar-background))',
+          foreground: 'hsl(var(--sidebar-foreground))',
+          primary: 'hsl(var(--sidebar-primary))',
+          'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+          accent: 'hsl(var(--sidebar-accent))',
+          'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+          border: 'hsl(var(--sidebar-border))',
+          ring: 'hsl(var(--sidebar-ring))',
+        },
       },
+      backgroundImage: () => ({
+        'involt-sidebar':
+          "var(--involt-sidebar, url('/src/assets/images/bg-sidebar.svg'))",
+      }),
     },
   },
   plugins: [require('tailwindcss-animate')],

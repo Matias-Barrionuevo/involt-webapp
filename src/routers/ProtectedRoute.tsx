@@ -1,3 +1,4 @@
+import PrivateLayout from '@/components/Layout/PrivateLayout';
 import { useAuthStore } from '@/modules/Auth/state/auth';
 import React from 'react';
 import { Navigate } from 'react-router-dom';
@@ -13,7 +14,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     return <Navigate to="/auth/login" />;
   }
 
-  return children;
+  return <PrivateLayout>{children}</PrivateLayout>;
 };
 
 export default ProtectedRoute;
