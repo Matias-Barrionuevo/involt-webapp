@@ -1,5 +1,5 @@
 import axiosInstance from '@/api/axiosInstance';
-import { BASE_AUTH_URL } from '@/modules/Auth/constants/services.constants';
+import { BASE_AUTH_URL } from '@/api/services.constants';
 import { CONSUMER } from '@/utils/constants/config';
 
 const consumer = CONSUMER;

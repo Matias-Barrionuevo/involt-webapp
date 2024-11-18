@@ -15,14 +15,7 @@ import {
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
 import { Fragment, useState } from 'react';
-import {
-  Link,
-  matchPath,
-  NavLink,
-  useLocation,
-  useMatch,
-  useMatches,
-} from 'react-router-dom';
+import { Link, matchPath, NavLink, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
 export function NavBar({

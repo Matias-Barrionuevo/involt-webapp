@@ -1,5 +1,5 @@
 import axiosInstance from '@/api/axiosInstance';
-import { CODE_URL } from '@/modules/Auth/constants/services.constants';
+import { CODE_URL } from '@/api/services.constants';
 import { CONSUMER } from '@/utils/constants/config';
 
 export const validateCode = ({

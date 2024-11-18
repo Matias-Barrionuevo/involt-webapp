@@ -1,21 +1,20 @@
 import { AppSidebar } from '@/components/Layout/sidebar/AppSideBar';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
+import { PRIVATE_PATH } from '@/utils/constants/routePath';
+import { ReactNode } from 'react';
+import { useLocation } from 'react-router-dom';
 
-const PrivateLayout = ({ children }) => {
+const PrivateLayout = ({ children }: { children: ReactNode }) => {
+  const { pathname } = useLocation();
+  const isHome = pathname === PRIVATE_PATH.HOME;
+  const title = isHome ? `Hola, ${'name'}` : pathname.replace('/', '');
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -24,7 +23,7 @@ const PrivateLayout = ({ children }) => {
           <div className="flex items-center justify-between gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
-            Data Fetching
+            <Label className="font-nunito text-2xl">{title}</Label>
           </div>
           <div className="ml-auto px-3">
             <div>hola</div>
