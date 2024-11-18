@@ -108,8 +108,8 @@ export function DataTable<TData, TValue>({
         <DataTableToolbar table={table} filterableColumns={filterableColumns} />
       )}
       <div className="rounded-md border w-full">
-        <div className="relative max-h-[500px] w-full overflow-y-auto overflow-auto">
-          <Table>
+        <div className="relative max-h-[500px] w-full overflow-auto">
+          <Table className="min-w-full w-full">
             <TableHeader className="sticky top-0 bg-white z-10">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
