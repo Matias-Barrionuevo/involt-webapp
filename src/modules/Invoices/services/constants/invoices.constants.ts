@@ -5,3 +5,13 @@ export const INVOICE_TYPES = {
   PROCESSING: 'processing',
   RECEIVED: 'received',
 };
+
+export const INVOICES_STATUS = {
+  FAILED: 'Failed',
+  NEW: 'New',
+  PAID: 'Paid',
+  PENDING: 'Pending',
+  PROCESSING: 'Processing',
+  REJECTED: 'Rejected',
+  VOIDED: 'Voided',
+};

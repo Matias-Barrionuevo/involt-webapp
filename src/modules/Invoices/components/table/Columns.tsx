@@ -4,7 +4,63 @@ import CurrencyFormat from '@/components/ui/currency-format';
 import { DataTableColumnHeader } from '@/components/ui/data-table-column-header';
 import { DataTableRowActions } from '@/components/ui/data-table-row-actions';
 import { Invoice } from '@/modules/Invoices/services/invoices.type';
+import {
+  ArrowDown,
+  ArrowRight,
+  ArrowUp,
+  CheckCircle,
+  Circle,
+  CircleOff,
+  HelpCircle,
+  Timer,
+} from 'lucide-react';
 import { ColumnDef } from '@tanstack/react-table';
+
+export const statuses = [
+  {
+    value: 'backlog',
+    label: 'Backlog',
+    icon: HelpCircle,
+  },
+  {
+    value: 'todo',
+    label: 'Todo',
+    icon: Circle,
+  },
+  {
+    value: 'in progress',
+    label: 'In Progress',
+    icon: Timer,
+  },
+  {
+    value: 'done',
+    label: 'Done',
+    icon: CheckCircle,
+  },
+  {
+    value: 'canceled',
+    label: 'Canceled',
+    icon: CircleOff,
+  },
+];
+
+export const priorities = [
+  {
+    label: 'Low',
+    value: 'low',
+    icon: ArrowDown,
+  },
+  {
+    label: 'Medium',
+    value: 'medium',
+    icon: ArrowRight,
+  },
+  {
+    label: 'High',
+    value: 'high',
+    icon: ArrowUp,
+  },
+];
 
 export const columns: ColumnDef<Invoice>[] = [
   {
@@ -15,32 +71,28 @@ export const columns: ColumnDef<Invoice>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'from',
-    enableSorting: false,
-    enableHiding: false,
+    accessorKey: 'to',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Sender" />
+      <DataTableColumnHeader column={column} title="Contact" />
     ),
     cell: ({ row }) => (
       <div className="flex gap-2 items-center">
         <Avatar className="h-7 w-7">
           <AvatarFallback className="bg-[#858584] text-white uppercase text-xs">
-            {row.getValue('from')}
+            {row.getValue('to')}
           </AvatarFallback>
         </Avatar>
-        {row.getValue('from')}
+        {row.getValue('to')}
       </div>
     ),
   },
   {
     accessorKey: 'createdAt',
-    enableSorting: false,
-    enableHiding: false,
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
         title="Date"
-        className="text-end"
+        className="text-end justify-end"
       />
     ),
     cell: ({ row }) => (

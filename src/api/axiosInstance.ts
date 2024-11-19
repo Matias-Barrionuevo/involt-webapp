@@ -22,8 +22,13 @@ axiosInstance.interceptors.request.use(
 
 const transformAxiosErrorToCustomErrors = (error: any) => {
   if (error.response && error.response.data) {
+    const { setToken } = useAuthStore.getState();
     const response = error.response;
     const problem = response.data.errorCode ?? 'UNKNOWN_ERROR';
+
+    if (error.status === 401) {
+      setToken(null);
+    }
 
     return Promise.reject({ ...error, problem });
   }

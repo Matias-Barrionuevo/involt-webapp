@@ -3,8 +3,8 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 interface AuthState {
-  token: string;
-  setToken: (token: string) => void;
+  token: string | null;
+  setToken: (token: string | null) => void;
   isLogin: () => boolean;
 }
 

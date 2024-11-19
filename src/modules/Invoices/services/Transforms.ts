@@ -5,8 +5,8 @@ export const InvoiceListTransform = (invoices: Invoice[]) =>
   invoices.map((inv) => ({
     ...inv,
     invoiceId: `INV-${inv.seqId}`,
-    contact: inv?.to?.email ?? '',
-    sender: inv?.from?.email ?? '',
+    to: inv?.to?.email ?? '',
+    from: inv?.from?.email ?? '',
     contactSender:
       inv.type === INVOICE_TYPES.GENERATED ? inv.to?.email : inv.from?.email,
   }));

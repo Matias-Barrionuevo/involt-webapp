@@ -5,7 +5,7 @@ import ReceivedInvoice from '@/modules/Home/components/ReceivedInvoices/Received
 
 const HomePage = () => {
   return (
-    <section className="h-full w-full p-8 shadow-lg rounded-3xl">
+    <section className="h-full w-full p-8 mt-4 shadow-lg border rounded-3xl">
       <header>
         <h6>Recent Activity</h6>
       </header>

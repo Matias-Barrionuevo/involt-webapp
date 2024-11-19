@@ -86,7 +86,7 @@ export const columns: ColumnDef<Invoice>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'contact',
+    accessorKey: 'to',
     enableSorting: false,
     enableHiding: false,
     header: ({ column }) => (
@@ -96,10 +96,10 @@ export const columns: ColumnDef<Invoice>[] = [
       <div className="flex gap-2 items-center">
         <Avatar className="h-7 w-7">
           <AvatarFallback className="bg-[#858584] text-white uppercase text-xs">
-            {row.getValue('contact')}
+            {row.getValue('to')}
           </AvatarFallback>
         </Avatar>
-        {row.getValue('contact')}
+        {row.getValue('to')}
       </div>
     ),
   },

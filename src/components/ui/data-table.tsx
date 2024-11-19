@@ -40,6 +40,7 @@ interface DataTableProps<TData, TValue> {
   pageSize?: number;
   filterableColumns?: {
     id: keyof TData;
+    multipleFilter?: boolean;
     title: string;
     options: {
       label: string;
@@ -59,6 +60,7 @@ export function DataTable<TData, TValue>({
   filterableColumns,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
+  const [globalFilter, setGlobalFilter] = React.useState();
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -68,12 +70,14 @@ export function DataTable<TData, TValue>({
     pageSize: pageSize,
   });
 
+  const sort = sorting[0];
+
   const { data, isLoading } = useCustomQuery(query, {
-    queryKey,
+    queryKey: [...queryKey, pagination, sorting, columnFilters, globalFilter],
     params: {
-      limit: '5',
-      orderBy: '-createdAt',
-      filter: 'generated',
+      limit: pagination.pageSize,
+      orderBy: `${sort?.desc ? '-' : ''}${sort?.id}`,
+      columnFilters,
     },
   });
 
@@ -85,10 +89,14 @@ export function DataTable<TData, TValue>({
       rowSelection,
       columnFilters,
       pagination,
+      globalFilter,
     },
     enableRowSelection: true,
     manualPagination: true,
+    manualFiltering: true,
+    enableGlobalFilter: true,
     pageCount: Math.ceil(data?.total ?? 0 / pageSize),
+    onGlobalFilterChange: setGlobalFilter,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -102,7 +110,7 @@ export function DataTable<TData, TValue>({
   });
 
   const TableSkeleton = () => (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {Array.from({ length: pageSize }).map((_, i) => (
         <Skeleton key={i} className="h-12 w-full" />
       ))}
@@ -115,12 +123,12 @@ export function DataTable<TData, TValue>({
         <DataTableToolbar table={table} filterableColumns={filterableColumns} />
       )}
       {isLoading ? (
-        <div className="p-4">
+        <div>
           <TableSkeleton />
         </div>
       ) : (
         <div className="rounded-md border w-full">
-          <div className="relative max-h-[500px] w-full overflow-auto">
+          <div className="relative max-h-[600px] w-full overflow-auto">
             <Table className="min-w-full w-full">
               <TableHeader className="sticky top-0 bg-white z-10">
                 {table.getHeaderGroups().map((headerGroup) => (
@@ -175,7 +183,7 @@ export function DataTable<TData, TValue>({
           </div>
         </div>
       )}
-      {showPagination && <DataTablePagination table={table} />}
+      {showPagination && !isLoading && <DataTablePagination table={table} />}
     </div>
   );
 }
