@@ -1,7 +1,9 @@
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import CurrencyFormat from '@/components/ui/currency-format';
 import { DataTableColumnHeader } from '@/components/ui/data-table-column-header';
 import { DataTableRowActions } from '@/components/ui/data-table-row-actions';
+import { Invoice } from '@/modules/Invoices/services/invoices.type';
 import {
   ArrowDown,
   ArrowRight,
@@ -12,6 +14,7 @@ import {
   HelpCircle,
   Timer,
 } from 'lucide-react';
+import { ColumnDef } from '@tanstack/react-table';
 
 const labels = [
   {
@@ -74,7 +77,7 @@ export const priorities = [
   },
 ];
 
-export const columns = [
+export const columns: ColumnDef<Invoice>[] = [
   {
     accessorKey: 'invoiceId',
     header: ({ column }) => <DataTableColumnHeader column={column} title="#" />,
@@ -89,7 +92,16 @@ export const columns = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Contact" />
     ),
-    cell: ({ row }) => <div>{row.getValue('contact')}</div>,
+    cell: ({ row }) => (
+      <div className="flex gap-2 items-center">
+        <Avatar className="h-7 w-7">
+          <AvatarFallback className="bg-[#858584] text-white uppercase text-xs">
+            {row.getValue('contact')}
+          </AvatarFallback>
+        </Avatar>
+        {row.getValue('contact')}
+      </div>
+    ),
   },
   {
     accessorKey: 'createdAt',
