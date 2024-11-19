@@ -1,5 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import GeneratedInvoice from '@/modules/Home/components/GeneratedInvoices/GeneratedInvoice';
+import PendingInvoice from '@/modules/Home/components/PendingInvoices/PendingInvoice';
+import ReceivedInvoice from '@/modules/Home/components/ReceivedInvoices/ReceivedInvoice';
 
 const HomePage = () => {
   return (
@@ -21,8 +23,12 @@ const HomePage = () => {
           <TabsContent value="generated-invoice">
             <GeneratedInvoice />
           </TabsContent>
-          <TabsContent value="received-invoice"></TabsContent>
-          <TabsContent value="pending-invoice"></TabsContent>
+          <TabsContent value="received-invoice">
+            <ReceivedInvoice />
+          </TabsContent>
+          <TabsContent value="pending-invoice">
+            <PendingInvoice />
+          </TabsContent>
         </Tabs>
       </main>
     </section>

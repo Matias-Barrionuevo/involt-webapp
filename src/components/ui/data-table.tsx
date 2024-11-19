@@ -35,6 +35,7 @@ interface DataTableProps<TData, TValue> {
     sorting: SortingState;
     filters: ColumnFiltersState;
   }) => Promise<{ data: TData[]; pageCount: number }>;
+  queryKey: string[];
   showPagination?: boolean;
   pageSize?: number;
   filterableColumns?: {
@@ -52,6 +53,7 @@ const dataFallback: any = [];
 export function DataTable<TData, TValue>({
   columns,
   query,
+  queryKey,
   showPagination = true,
   pageSize = 5,
   filterableColumns,
@@ -67,7 +69,7 @@ export function DataTable<TData, TValue>({
   });
 
   const { data, isLoading } = useCustomQuery(query, {
-    queryKey: ['invoices-generated'],
+    queryKey,
     params: {
       limit: '5',
       orderBy: '-createdAt',
