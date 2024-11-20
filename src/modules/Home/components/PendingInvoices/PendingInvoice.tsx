@@ -9,6 +9,7 @@ const PendingInvoice = () => {
       query={getPendingInvoices}
       queryKey={['invoice-pending']}
       showPagination={false}
+      showSearch={false}
     />
   );
 };

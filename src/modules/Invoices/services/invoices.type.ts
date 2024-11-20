@@ -1,3 +1,9 @@
+import {
+  ColumnFiltersState,
+  PaginationState,
+  SortingState,
+} from '@tanstack/react-table';
+
 export interface Invoice {
   id: string;
   from: From;
@@ -79,4 +85,16 @@ interface From {
   email: string;
   name: string;
   kind: string;
+}
+
+export interface ColumnFilter {
+  id: string;
+  value: unknown[] | null;
+}
+
+export interface GetInvoiceParams {
+  pagination?: PaginationState;
+  sorting?: SortingState;
+  columnFilters?: ColumnFilter[] | ColumnFiltersState;
+  globalFilter?: string;
 }

@@ -8,6 +8,8 @@ import { useEffect, useMemo, useState } from 'react';
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
+  disabled?: boolean;
+  searchPlaceholder?: string;
   filterableColumns?: {
     id: keyof TData;
     title: string;
@@ -21,13 +23,15 @@ interface DataTableToolbarProps<TData> {
 
 export function DataTableToolbar<TData>({
   table,
+  disabled,
+  searchPlaceholder,
   filterableColumns = [],
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
   const [searchValue, setSearchValue] = useState<string>('');
 
   // Debounce function
-  const debounce = (func: Function, delay: number) => {
+  const debounce = (func: any, delay: number) => {
     let timeoutId: NodeJS.Timeout;
     return (...args: any[]) => {
       clearTimeout(timeoutId);
@@ -50,10 +54,11 @@ export function DataTableToolbar<TData>({
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
         <Input
-          placeholder="Search"
+          placeholder={searchPlaceholder}
           value={searchValue}
+          disabled={disabled}
           onChange={(event) => setSearchValue(event.target.value)}
-          className="h-8 w-[150px] lg:w-[250px]"
+          className="w-[150px] lg:w-[250px]"
         />
         {filterableColumns.map(({ id, multipleFilter, title, options }) => {
           const column = table.getColumn(id as string);

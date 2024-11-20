@@ -1,5 +1,5 @@
 import { DataTable } from '@/components/ui/data-table';
-import { columns } from '@/modules/Invoices/components/table/Columns';
+import { columns } from '@/modules/Invoices/components/List/Generated/Columns';
 import { INVOICES_STATUS } from '@/modules/Invoices/services/constants/invoices.constants';
 import { getGeneratedInvoices } from '@/modules/Invoices/services/invoices.service';
 
@@ -9,6 +9,7 @@ const GeneratedInvoices = () => {
       columns={columns}
       query={getGeneratedInvoices}
       queryKey={['invoice-generated']}
+      searchPlaceholder="Search by name, email, number..."
       pageSize={10}
       filterableColumns={[
         {

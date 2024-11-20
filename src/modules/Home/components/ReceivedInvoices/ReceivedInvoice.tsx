@@ -9,6 +9,7 @@ const ReceivedInvoice = () => {
       query={getReceivedInvoices}
       queryKey={['invoice-received']}
       showPagination={false}
+      showSearch={false}
     />
   );
 };

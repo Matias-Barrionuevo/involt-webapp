@@ -8,6 +8,7 @@ const GeneratedInvoice = () => {
       columns={columns}
       query={getGeneratedInvoices}
       queryKey={['invoice-generated']}
+      showSearch={false}
       showPagination={false}
     />
   );

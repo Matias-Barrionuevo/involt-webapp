@@ -1,6 +1,10 @@
-import axios from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { BASE_API_URL } from '@/utils/constants/config';
 import { useAuthStore } from '@/modules/Auth/state/auth';
+
+export interface CustomError extends AxiosError {
+  problem?: string;
+}
 
 const axiosInstance = axios.create({
   baseURL: BASE_API_URL,
@@ -15,30 +19,35 @@ axiosInstance.interceptors.request.use(
     }
     return config;
   },
-  (error) => {
+  (error: AxiosError) => {
     return Promise.reject(error);
   }
 );
 
-const transformAxiosErrorToCustomErrors = (error: any) => {
-  if (error.response && error.response.data) {
-    const { setToken } = useAuthStore.getState();
-    const response = error.response;
-    const problem = response.data.errorCode ?? 'UNKNOWN_ERROR';
+const transformAxiosErrorToCustomErrors = (error: AxiosError): CustomError => {
+  const customError: CustomError = error;
 
-    if (error.status === 401) {
+  if (error.response) {
+    const { setToken } = useAuthStore.getState();
+    const response = error.response as AxiosResponse;
+    customError.problem = response.data.errorCode ?? 'UNKNOWN_ERROR';
+
+    if (response.status === 401) {
       setToken(null);
     }
-
-    return Promise.reject({ ...error, problem });
+  } else {
+    customError.problem = 'UNKNOWN_ERROR';
   }
 
-  return Promise.reject({ ...error, problem: 'UNKNOWN_ERROR' });
+  return customError;
 };
 
 axiosInstance.interceptors.response.use(
-  (response) => response,
-  transformAxiosErrorToCustomErrors
+  (response: AxiosResponse) => response,
+  (error: AxiosError) => {
+    const customError = transformAxiosErrorToCustomErrors(error);
+    return Promise.reject(customError);
+  }
 );
 
 export default axiosInstance;

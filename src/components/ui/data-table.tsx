@@ -29,15 +29,22 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
-  query: (params: {
-    page: number;
-    pageSize: number;
-    sorting: SortingState;
-    filters: ColumnFiltersState;
-  }) => Promise<{ data: TData[]; pageCount: number }>;
+  query: (params?: {
+    pagination?: PaginationState;
+    sorting?: SortingState;
+    columnFilters?:
+      | ColumnFiltersState
+      | {
+          id: string;
+          value: unknown[] | null;
+        }[];
+    globalFilter?: string;
+  }) => Promise<{ data: { data: TData[]; total: number } }>;
   queryKey: string[];
   showPagination?: boolean;
   pageSize?: number;
+  showSearch?: boolean;
+  searchPlaceholder?: string;
   filterableColumns?: {
     id: keyof TData;
     multipleFilter?: boolean;
@@ -58,9 +65,11 @@ export function DataTable<TData, TValue>({
   showPagination = true,
   pageSize = 5,
   filterableColumns,
+  showSearch = true,
+  searchPlaceholder = '',
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
-  const [globalFilter, setGlobalFilter] = React.useState();
+  const [globalFilter, setGlobalFilter] = React.useState<string>('');
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -70,14 +79,13 @@ export function DataTable<TData, TValue>({
     pageSize: pageSize,
   });
 
-  const sort = sorting[0];
-
   const { data, isLoading } = useCustomQuery(query, {
     queryKey: [...queryKey, pagination, sorting, columnFilters, globalFilter],
     params: {
-      limit: pagination.pageSize,
-      orderBy: `${sort?.desc ? '-' : ''}${sort?.id}`,
+      pagination,
+      sorting,
       columnFilters,
+      globalFilter,
     },
   });
 
@@ -95,7 +103,7 @@ export function DataTable<TData, TValue>({
     manualPagination: true,
     manualFiltering: true,
     enableGlobalFilter: true,
-    pageCount: Math.ceil(data?.total ?? 0 / pageSize),
+    pageCount: Math.ceil((data?.total || 0) / pagination.pageSize),
     onGlobalFilterChange: setGlobalFilter,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -119,8 +127,12 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4 py-4">
-      {filterableColumns && (
-        <DataTableToolbar table={table} filterableColumns={filterableColumns} />
+      {(filterableColumns || showSearch) && (
+        <DataTableToolbar
+          table={table}
+          filterableColumns={filterableColumns}
+          searchPlaceholder={searchPlaceholder}
+        />
       )}
       {isLoading ? (
         <div>
@@ -128,7 +140,7 @@ export function DataTable<TData, TValue>({
         </div>
       ) : (
         <div className="rounded-md border w-full">
-          <div className="relative max-h-[600px] w-full overflow-auto">
+          <div className="relative max-h-[300px] md:max-h-[500px] lg:max-h-[650px] w-full overflow-auto">
             <Table className="min-w-full w-full">
               <TableHeader className="sticky top-0 bg-white z-10">
                 {table.getHeaderGroups().map((headerGroup) => (
@@ -183,7 +195,9 @@ export function DataTable<TData, TValue>({
           </div>
         </div>
       )}
-      {showPagination && !isLoading && <DataTablePagination table={table} />}
+      {showPagination && !isLoading && (
+        <DataTablePagination table={table} total={data?.total} />
+      )}
     </div>
   );
 }
