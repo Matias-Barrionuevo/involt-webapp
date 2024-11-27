@@ -1,15 +1,15 @@
 import { Label } from '@/components/ui/label';
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import Lottie from 'lottie-react';
+
+import character from '@/assets/lotties/character.json';
 
 const LoginIllustration = () => {
   return (
     <section className="flex flex-col gap-10">
       <div>
-        <DotLottieReact
-          renderConfig={{ freezeOnOffscreen: true }}
-          src="/lotties/test.json"
-          loop
-          autoplay
+        <Lottie
+          animationData={character}
+          className="max-w-[418px] max-h-[418px]"
         />
       </div>
       <div className="flex flex-col px-10 gap-2 justify-center items-center text-center">

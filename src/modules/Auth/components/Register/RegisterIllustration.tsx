@@ -1,3 +1,4 @@
+import Lottie from 'lottie-react';
 import Autoplay from 'embla-carousel-autoplay';
 import {
   Carousel,
@@ -5,7 +6,10 @@ import {
   CarouselItem,
 } from '@/components/ui/carousel';
 import { Label } from '@/components/ui/label';
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+
+import OnBoarding1 from '@/assets/lotties/onboarding-01.json';
+import OnBoarding2 from '@/assets/lotties/onboarding-02.json';
+import OnBoarding3 from '@/assets/lotties/onboarding-03.json';
 
 const RegisterIllustration = () => {
   return (
@@ -17,11 +21,9 @@ const RegisterIllustration = () => {
       <CarouselContent>
         <CarouselItem>
           <div className="flex flex-col gap-10 items-center text-center px-6">
-            <DotLottieReact
-              src="/lotties/test.json"
-              renderConfig={{ freezeOnOffscreen: true }}
-              loop
-              autoplay
+            <Lottie
+              animationData={OnBoarding1}
+              className="max-w-[418px] max-h-[418px]"
             />
             <Label className="text-xl text-white">
               Send & receive invoices worldwide
@@ -30,11 +32,9 @@ const RegisterIllustration = () => {
         </CarouselItem>
         <CarouselItem>
           <div className="flex flex-col gap-10 items-center text-center px-6">
-            <DotLottieReact
-              renderConfig={{ freezeOnOffscreen: true }}
-              src="/lotties/test2.json"
-              loop
-              autoplay
+            <Lottie
+              animationData={OnBoarding2}
+              className="max-w-[418px] max-h-[418px]"
             />
             <Label className="text-xl text-white">
               Simplify international payments
@@ -43,11 +43,9 @@ const RegisterIllustration = () => {
         </CarouselItem>
         <CarouselItem>
           <div className="flex flex-col gap-10 items-center text-center px-6">
-            <DotLottieReact
-              renderConfig={{ freezeOnOffscreen: true }}
-              src="/lotties/test.json"
-              loop
-              autoplay
+            <Lottie
+              animationData={OnBoarding3}
+              className="max-w-[418px] max-h-[418px]"
             />
             <Label className="text-xl text-white">
               Receive payments instantly from anywhere in the world

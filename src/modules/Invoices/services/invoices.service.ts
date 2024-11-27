@@ -94,3 +94,31 @@ export const getReceivedPaidInvoices = async (
     throw customError;
   }
 };
+
+export const sendInvoiceReminder = async (invoiceId: number) => {
+  try {
+    const { data } = await axiosInstance.post(
+      `${INVOICES_URL}/${invoiceId}/reminder`
+    );
+
+    return { data };
+  } catch (error) {
+    const customError = error as CustomError;
+
+    throw customError;
+  }
+};
+
+// export const sendInvoiceReminder = async (invoiceId) => {
+//   const { data: responseData, problem } = await privatePost({
+//     endpoint: `${INVOICES_URL}/${invoiceId}/reminder`,
+//   });
+
+//   if (problem) {
+//     return { data: null, problem };
+//   }
+
+//   const result = Transforms.ReminderTransform(responseData);
+
+//   return { data: result, problem: null };
+// };
